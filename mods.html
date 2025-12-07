@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modpack UI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Modpack Arayüzü</h1>
+    <label class="theme-switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+    </label>
+</header>
+
+<nav>
+    <button onclick="showTab('mods')">Modlar</button>
+    <button onclick="showTab('resourcepacks')">Resource Packler</button>
+    <button onclick="showTab('shaders')">Shaderler</button>
+    <button onclick="showTab('others')">Diğerleri</button>
+</nav>
+
+<main>
+    <section id="mods" class="tab-content"></section>
+    <section id="resourcepacks" class="tab-content"></section>
+    <section id="shaders" class="tab-content"></section>
+    <section id="others" class="tab-content"></section>
+    <section id="others" class="tab-content"></section>
+<div class="shaderpacks-container">
+    <a class="shaderpacks-btn" href="others/zips/shaderpacks.zip" download>Tüm shader paketlerini ZIP Olarak İndir</a>
+<div class="resourcepacks-container">
+    <a class="resourcepacks" href="others/zips/resourcepacks.zip" download>Tüm doku paketlerini ZIP Olarak İndir</a>
+<div class="all">
+    <a class="all-btn" href="others/zips/all.zip" download>Tümünü ZIP Olarak İndir</a>
+<div class="txt">
+    <a class="txt-btn" href="others/inform.txt" download>Bilgilendirme Metnini İndir</a>
+</div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

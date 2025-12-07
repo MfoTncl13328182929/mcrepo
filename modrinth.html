@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Minecraft Mod İndirici</title>
+<style>
+    body { font-family: Arial; background: #0d0d0d; color: white; margin:0; padding:0; }
+    header { background:#1a1a1a; padding:20px; text-align:center; font-size:28px; font-weight:bold; }
+    .container { width:90%; max-width:600px; margin:auto; padding:20px; }
+    .card { background:#1b1b1b; padding:20px; border-radius:12px; box-shadow:0 0 15px black; }
+    input, select, button {
+        width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px;
+        background:#2a2a2a; color:white; font-size:16px;
+    }
+    button { background:#4CAF50; font-weight:bold; cursor:pointer; }
+    button:hover { background:#45a049; }
+    .mod-result { background:#222; padding:15px; border-radius:10px; margin-top:20px; }
+    .mod-header { display:flex; align-items:center; gap:15px; }
+    .mod-result img { width:64px; height:64px; border-radius:8px; }
+</style>
+</head>
+<body>
+
+<header>Modrinth Mod İndirici</header>
+
+<div class="container">
+
+<div class="card">
+    <input type="text" id="modAdi" placeholder="Mod adı (örn: Sodium)">
+    
+    <select id="surum">
+        <option value="">Minecraft Sürümü Seç</option>
+        <option>1.21.10</option>
+        <option>1.21.9</option>
+        <option>1.21.8</option>
+        <option>1.21.7</option>
+        <option>1.21.6</option>
+        <option>1.21.5</option>
+        <option>1.21.4</option>
+        <option>1.21.3</option>
+        <option>1.21.2</option>
+        <option>1.21.1</option>
+        <option>1.21</option>
+        <option>1.20.6</option>
+        <option>1.20.4</option>
+        <option>1.20.1</option>
+        <option>1.19.4</option>
+        <option>1.18.2</option>
+        <option>1.16.5</option>
+    </select>
+
+    <select id="loader">
+        <option value="">Mod Yükleyici Seç</option>
+        <option value="fabric">Fabric</option>
+        <option value="forge">Forge</option>
+        <option value="neoforge">NeoForge</option>
+        <option value="quilt">Quilt</option>
+    </select>
+
+    <button onclick="ara()">Modu Ara</button>
+</div>
+
+<div id="sonuc"></div>
+
+</div>
+
+<script>
+async function ara() {
+    let ad = document.getElementById("modAdi").value;
+    let surum = document.getElementById("surum").value;
+    let loader = document.getElementById("loader").value;
+    let sonucDiv = document.getElementById("sonuc");
+
+    if (!ad || !surum || !loader) {
+        sonucDiv.innerHTML = "<p>Tüm alanları doldur.</p>";
+        return;
+    }
+
+    sonucDiv.innerHTML = "Aranıyor...";
+
+    // Mod arama
+    let arama = await fetch(`https://api.modrinth.com/v2/search?query=${ad}`);
+    let data = await arama.json();
+
+    if (data.hits.length === 0) {
+        sonucDiv.innerHTML = "<p>Mod bulunamadı.</p>";
+        return;
+    }
+
+    let mod = data.hits[0];
+    let modId = mod.project_id;
+
+    // Versiyonları çek
+    let verFetch = await fetch(`https://api.modrinth.com/v2/project/${modId}/version`);
+    let verData = await verFetch.json();
+
+    // Filtrele
+    let uygun = verData.filter(v => 
+        v.game_versions.includes(surum) && v.loaders.includes(loader)
+    );
+
+    if (uygun.length === 0) {
+        sonucDiv.innerHTML = `<p>Bu mod için <b>${surum}</b> + <b>${loader}</b> dosyası yok.</p>`;
+        return;
+    }
+
+    let file = uygun[0].files[0];
+
+    sonucDiv.innerHTML = `
+        <div class="mod-result">
+            <div class="mod-header">
+                <img src="${mod.icon_url || ''}">
+                <div>
+                    <h2>${mod.title}</h2>
+                    <p>${mod.description}</p>
+                </div>
+            </div>
+            <br>
+            <a href="${file.url}" download>
+                <button>İndir (${loader}, ${surum})</button>
+            </a>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>

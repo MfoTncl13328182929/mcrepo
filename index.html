@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modpack Home</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="home-container">
+    <h1>Modpack Arayüzüne Hoşgeldiniz</h1>
+    <p>Buradan tüm mod, resource pack ve shader içeriklerine ulaşabilirsiniz.</p>
+    <button class="go-btn" onclick="goToMods()">Oyuncu Mod Deposuna Git</button>
+    <button class="go-btn" onclick="goToModrinth()">Modrinth Mod İndirici</button>
+</main>
+
+<script>
+function goToMods() {
+    window.location.href = 'mods.html';
+}
+function goToModrinth() {
+    window.location.href = 'modrinth.html'; // mevcut Modrinth indirici sayfası
+}
+</script>
+</body>
+</html>
